@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { ReviewItem } from '@/lib/types';
 import { getTodayString } from '@/utils/reviewSchedule';
+ import { awardXP } from '@/utils/xpSystem';
 
 export default function ReviewList() {
   const [reviewItems, setReviewItems] = useState<ReviewItem[]>([]);
@@ -101,24 +102,45 @@ export default function ReviewList() {
     }
   }
 
-  async function completeReview(scheduleId: string) {
-    try {
-      const { error } = await supabase
-        .from('review_schedules')
-        .update({
-          completed: true,
-          completed_at: new Date().toISOString(),
-        })
-        .eq('id', scheduleId);
+async function completeReview(scheduleId: string, item: ReviewItem) {
+  try {
+    const { error } = await supabase
+      .from('review_schedules')
+      .update({
+        completed: true,
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', scheduleId);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      // リストを更新
-      setReviewItems(reviewItems.filter(item => item.scheduleId !== scheduleId));
-    } catch (error) {
-      console.error('Error completing review:', error);
+    // 科目IDを取得
+    const { data: subjects } = await supabase
+      .from('subjects')
+      .select('id')
+      .eq('name', item.subjectName)
+      .single();
+
+    if (subjects) {
+      // 復習完了でXPを付与（学習時間は0として固定XPのみ）
+      const xpResult = await awardXP(subjects.id, 'review', 0);
+      
+      if (xpResult.success) {
+        let message = `+${xpResult.xpGained} XP獲得!`;
+        if (xpResult.leveledUp) {
+          message += `\n🎉 ランクアップ！${xpResult.newRank}`;
+        }
+        alert(message);
+      }
     }
+
+    // リストを更新
+    setReviewItems(reviewItems.filter(i => i.scheduleId !== scheduleId));
+  } catch (error) {
+    console.error('Error completing review:', error);
+    alert('完了処理に失敗しました');
   }
+}
 
   if (loading) {
     return (
@@ -161,10 +183,9 @@ export default function ReviewList() {
               </p>
             </div>
             <button
-              onClick={() => completeReview(item.scheduleId)}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
-            >
-              完了
+                onClick={() => completeReview(item.scheduleId, item)}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                完了
             </button>
           </div>
         </div>

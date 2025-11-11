@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Subject, Chapter, Topic, PracticeExam } from '@/lib/types';
 import { calculateReviewDates, formatDateForDB } from '@/utils/reviewSchedule';
+import { awardXP } from '@/utils/xpSystem';
 
 export default function RonbunshikiSubjectPage() {
   const params = useParams();
@@ -177,7 +178,12 @@ export default function RonbunshikiSubjectPage() {
     }
   }
 
-  async function recordStudy(topicId: string) {
+
+
+
+
+
+async function recordStudy(topicId: string) {
   // 学習時間を入力するプロンプトを追加
   const minutesStr = prompt('学習時間を入力してください（分）:');
   if (!minutesStr) return;
@@ -197,7 +203,7 @@ export default function RonbunshikiSubjectPage() {
         record_type: 'topic',
         topic_id: topicId,
         studied_at: new Date().toISOString(),
-        study_minutes: minutes, // 学習時間を追加
+        study_minutes: minutes,
       })
       .select()
       .single();
@@ -218,14 +224,26 @@ export default function RonbunshikiSubjectPage() {
 
     if (scheduleError) throw scheduleError;
 
+    // XPを付与
+    const xpResult = await awardXP(subjectId, 'topic', minutes);
+    
+    if (xpResult.success) {
+      let message = `+${xpResult.xpGained} XP獲得!`;
+      if (xpResult.leveledUp) {
+        message += `\n🎉 ランクアップ！${xpResult.newRank}`;
+      }
+      alert(message);
+    }
+
     // UIを更新
     setStudiedTopicIds(new Set([...studiedTopicIds, topicId]));
   } catch (error) {
     console.error('Error recording study:', error);
+    alert('記録に失敗しました');
   }
 }
 
-  async function recordPracticeExam(examId: string) {
+async function recordPracticeExam(examId: string) {
   // 学習時間を入力するプロンプトを追加
   const minutesStr = prompt('学習時間を入力してください（分）:');
   if (!minutesStr) return;
@@ -245,7 +263,7 @@ export default function RonbunshikiSubjectPage() {
         record_type: 'practice_exam',
         practice_exam_id: examId,
         studied_at: new Date().toISOString(),
-        study_minutes: minutes, // 学習時間を追加
+        study_minutes: minutes,
       })
       .select()
       .single();
@@ -266,10 +284,22 @@ export default function RonbunshikiSubjectPage() {
 
     if (scheduleError) throw scheduleError;
 
+    // XPを付与
+    const xpResult = await awardXP(subjectId, 'practice_exam', minutes);
+    
+    if (xpResult.success) {
+      let message = `+${xpResult.xpGained} XP獲得!`;
+      if (xpResult.leveledUp) {
+        message += `\n🎉 ランクアップ！${xpResult.newRank}`;
+      }
+      alert(message);
+    }
+
     // UIを更新
     setCompletedExamIds(new Set([...completedExamIds, examId]));
   } catch (error) {
     console.error('Error recording practice exam:', error);
+    alert('記録に失敗しました');
   }
 }
 
