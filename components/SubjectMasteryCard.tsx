@@ -14,7 +14,7 @@ export default function SubjectMasteryCard({ mastery }: SubjectMasteryCardProps)
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
       {/* ヘッダー（ランク表示） */}
-      <div className={`bg-gradient-to-r ${rankGradient} p-6 text-white`}>
+      <div className={`bg-linear-to-r ${rankGradient} p-6 text-white`}>
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-xl font-bold">{mastery.subject.name}</h3>
           <div className="text-3xl font-black tracking-wider">

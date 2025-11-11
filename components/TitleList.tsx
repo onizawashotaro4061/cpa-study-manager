@@ -137,7 +137,7 @@ export default function TitleList() {
               } ${isEquipped ? 'ring-4 ring-indigo-500' : ''}`}
               onClick={() => isEarned && handleEquipTitle(title.id)}
             >
-              <div className={`bg-gradient-to-r ${gradient} p-6 text-white relative`}>
+              <div className={`bg-linear-to-r ${gradient} p-6 text-white relative`}>
                 {isEquipped && (
                   <div className="absolute top-2 right-2 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-bold">
                     装備中

@@ -132,7 +132,7 @@ export default function PlayerCard() {
   return (
     <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-2xl mx-auto">
       {/* ヘッダー - 称号表示 */}
-      <div className={`bg-gradient-to-r ${titleGradient} p-8 text-white relative overflow-hidden`}>
+      <div className={`bg-linear-to-r ${titleGradient} p-8 text-white relative overflow-hidden`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-32 -mt-32"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-24 -mb-24"></div>
         
@@ -165,7 +165,7 @@ export default function PlayerCard() {
         {/* 統計情報グリッド */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {/* 累計学習時間 */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-2">⏰</div>
             <div className="text-2xl font-bold text-indigo-600 mb-1">
               {formatStudyTime(totalStudyHours)}
@@ -174,7 +174,7 @@ export default function PlayerCard() {
           </div>
 
           {/* ストリーク */}
-          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-orange-50 to-red-50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-2">🔥</div>
             <div className="text-2xl font-bold text-orange-600 mb-1">
               {stats?.streak_days || 0}日
@@ -183,7 +183,7 @@ export default function PlayerCard() {
           </div>
 
           {/* 称号コレクション */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-purple-50 to-pink-50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-2">🏆</div>
             <div className="text-2xl font-bold text-purple-600 mb-1">
               {earnedTitles} / {totalTitles}
@@ -192,7 +192,7 @@ export default function PlayerCard() {
           </div>
 
           {/* ギアポイント */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-2">💎</div>
             <div className="text-2xl font-bold text-green-600 mb-1">
               {stats?.gear_points || 0}
@@ -204,7 +204,7 @@ export default function PlayerCard() {
         {/* 称号変更ボタン */}
         <div className="mt-6">
           <a href="/titles">
-            <button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-lg font-bold hover:from-indigo-600 hover:to-purple-700 transition-all">
+            <button className="w-full bg-linear-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-lg font-bold hover:from-indigo-600 hover:to-purple-700 transition-all">
               称号を変更する
             </button>
           </a>

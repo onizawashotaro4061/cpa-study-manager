@@ -27,7 +27,7 @@ export default function XPNotification({ xpGained, newRank, leveledUp, onClose }
         visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}
     >
-      <div className={`rounded-xl shadow-2xl p-6 ${leveledUp ? 'bg-gradient-to-r from-yellow-400 to-orange-500' : 'bg-gradient-to-r from-indigo-500 to-purple-600'} text-white`}>
+      <div className={`rounded-xl shadow-2xl p-6 ${leveledUp ? 'bg-linear-to-r from-yellow-400 to-orange-500' : 'bg-linear-to-r from-indigo-500 to-purple-600'} text-white`}>
         <div className="text-center">
           {leveledUp && <div className="text-4xl mb-2">🎉</div>}
           <div className="text-2xl font-black mb-2">
