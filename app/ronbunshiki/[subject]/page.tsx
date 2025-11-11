@@ -178,78 +178,100 @@ export default function RonbunshikiSubjectPage() {
   }
 
   async function recordStudy(topicId: string) {
-    try {
-      // 学習記録を作成
-      const { data: studyRecord, error: recordError } = await supabase
-        .from('study_records')
-        .insert({
-          user_id: '00000000-0000-0000-0000-000000000000', // 仮のユーザーID
-          record_type: 'topic',
-          topic_id: topicId,
-          studied_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-
-      if (recordError) throw recordError;
-
-      // 復習スケジュールを作成
-      const reviewDates = calculateReviewDates(new Date());
-      const schedules = reviewDates.map((date, index) => ({
-        study_record_id: studyRecord.id,
-        review_number: index + 1,
-        scheduled_date: formatDateForDB(date),
-      }));
-
-      const { error: scheduleError } = await supabase
-        .from('review_schedules')
-        .insert(schedules);
-
-      if (scheduleError) throw scheduleError;
-
-      // UIを更新
-      setStudiedTopicIds(new Set([...studiedTopicIds, topicId]));
-    } catch (error) {
-      console.error('Error recording study:', error);
-    }
+  // 学習時間を入力するプロンプトを追加
+  const minutesStr = prompt('学習時間を入力してください（分）:');
+  if (!minutesStr) return;
+  
+  const minutes = parseInt(minutesStr);
+  if (isNaN(minutes) || minutes <= 0) {
+    alert('正しい数値を入力してください');
+    return;
   }
+
+  try {
+    // 学習記録を作成
+    const { data: studyRecord, error: recordError } = await supabase
+      .from('study_records')
+      .insert({
+        user_id: '00000000-0000-0000-0000-000000000000',
+        record_type: 'topic',
+        topic_id: topicId,
+        studied_at: new Date().toISOString(),
+        study_minutes: minutes, // 学習時間を追加
+      })
+      .select()
+      .single();
+
+    if (recordError) throw recordError;
+
+    // 復習スケジュールを作成
+    const reviewDates = calculateReviewDates(new Date());
+    const schedules = reviewDates.map((date, index) => ({
+      study_record_id: studyRecord.id,
+      review_number: index + 1,
+      scheduled_date: formatDateForDB(date),
+    }));
+
+    const { error: scheduleError } = await supabase
+      .from('review_schedules')
+      .insert(schedules);
+
+    if (scheduleError) throw scheduleError;
+
+    // UIを更新
+    setStudiedTopicIds(new Set([...studiedTopicIds, topicId]));
+  } catch (error) {
+    console.error('Error recording study:', error);
+  }
+}
 
   async function recordPracticeExam(examId: string) {
-    try {
-      // 学習記録を作成
-      const { data: studyRecord, error: recordError } = await supabase
-        .from('study_records')
-        .insert({
-          user_id: '00000000-0000-0000-0000-000000000000', // 仮のユーザーID
-          record_type: 'practice_exam',
-          practice_exam_id: examId,
-          studied_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-
-      if (recordError) throw recordError;
-
-      // 復習スケジュールを作成
-      const reviewDates = calculateReviewDates(new Date());
-      const schedules = reviewDates.map((date, index) => ({
-        study_record_id: studyRecord.id,
-        review_number: index + 1,
-        scheduled_date: formatDateForDB(date),
-      }));
-
-      const { error: scheduleError } = await supabase
-        .from('review_schedules')
-        .insert(schedules);
-
-      if (scheduleError) throw scheduleError;
-
-      // UIを更新
-      setCompletedExamIds(new Set([...completedExamIds, examId]));
-    } catch (error) {
-      console.error('Error recording practice exam:', error);
-    }
+  // 学習時間を入力するプロンプトを追加
+  const minutesStr = prompt('学習時間を入力してください（分）:');
+  if (!minutesStr) return;
+  
+  const minutes = parseInt(minutesStr);
+  if (isNaN(minutes) || minutes <= 0) {
+    alert('正しい数値を入力してください');
+    return;
   }
+
+  try {
+    // 学習記録を作成
+    const { data: studyRecord, error: recordError } = await supabase
+      .from('study_records')
+      .insert({
+        user_id: '00000000-0000-0000-0000-000000000000',
+        record_type: 'practice_exam',
+        practice_exam_id: examId,
+        studied_at: new Date().toISOString(),
+        study_minutes: minutes, // 学習時間を追加
+      })
+      .select()
+      .single();
+
+    if (recordError) throw recordError;
+
+    // 復習スケジュールを作成
+    const reviewDates = calculateReviewDates(new Date());
+    const schedules = reviewDates.map((date, index) => ({
+      study_record_id: studyRecord.id,
+      review_number: index + 1,
+      scheduled_date: formatDateForDB(date),
+    }));
+
+    const { error: scheduleError } = await supabase
+      .from('review_schedules')
+      .insert(schedules);
+
+    if (scheduleError) throw scheduleError;
+
+    // UIを更新
+    setCompletedExamIds(new Set([...completedExamIds, examId]));
+  } catch (error) {
+    console.error('Error recording practice exam:', error);
+  }
+}
 
   if (loading) {
     return (

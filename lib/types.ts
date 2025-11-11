@@ -74,3 +74,34 @@ export interface ReviewItem {
   studyRecordId: string;
   scheduleId: string;
 }
+
+export interface StudyTimeLog {
+  id: string;
+  user_id: string;
+  subject_id: string;
+  study_date: string;
+  minutes: number;
+  memo: string | null;
+  created_at: string;
+}
+
+export interface SubjectStudyTime {
+  subject_id: string;
+  subject_name: string;
+  total_minutes: number;
+}
+
+export interface DailyStudyTime {
+  date: string;
+  total_minutes: number;
+  subjects: {
+    subject_name: string;
+    minutes: number;
+  }[];
+}
+
+export interface WeeklyStudyStats {
+  week_start: string;
+  total_minutes: number;
+  days: DailyStudyTime[];
+}
