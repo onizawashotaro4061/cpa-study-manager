@@ -21,12 +21,6 @@ export default function TantoushikiPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">学習進捗</h2>
           <Dashboard examType="tantoushiki" title="" />
         </div>
-
-        <div className="mt-8 text-center">
-          <a href="/" className="text-indigo-600 hover:text-indigo-800 font-semibold">
-            ← トップページに戻る
-          </a>
-        </div>
       </div>
     </div>
   );

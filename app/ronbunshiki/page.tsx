@@ -22,11 +22,7 @@ export default function ronbunshikiPage() {
           <Dashboard examType="ronbunshiki" title="" />
         </div>
 
-        <div className="mt-8 text-center">
-          <a href="/" className="text-indigo-600 hover:text-indigo-800 font-semibold">
-            ← トップページに戻る
-          </a>
-        </div>
+        
       </div>
     </div>
   );

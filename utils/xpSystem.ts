@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { calculateXP, calculateRank } from './rankSystem';
+import { checkAndAwardTitles } from './titleSystem';
 
 const USER_ID = '00000000-0000-0000-0000-000000000000'; // 仮のユーザーID
 
@@ -69,7 +70,7 @@ export async function awardXP(
     await updateUserStats(xpGained);
 
     // バッジチェック
-    await checkAndAwardBadges();
+    await checkAndAwardTitles();
 
     return {
       success: true,

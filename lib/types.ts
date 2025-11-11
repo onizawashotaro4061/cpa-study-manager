@@ -176,3 +176,32 @@ export interface UserChallengeProgress {
 export interface SubjectMasteryWithSubject extends SubjectMastery {
   subject: Subject;
 }
+export type TitleRarity = 'common' | 'rare' | 'epic' | 'legendary';
+
+export interface Title {
+  id: string;
+  name: string;
+  description: string;
+  requirement_type: string;
+  requirement_subject_id: string | null;
+  requirement_rank: string | null;
+  requirement_value: number | null;
+  gear_points: number;
+  rarity: TitleRarity;
+  created_at: string;
+}
+
+export interface UserTitle {
+  id: string;
+  user_id: string;
+  title_id: string;
+  earned_at: string;
+  title?: Title;
+}
+
+export interface UserEquippedTitle {
+  user_id: string;
+  title_id: string | null;
+  updated_at: string;
+  title?: Title;
+}

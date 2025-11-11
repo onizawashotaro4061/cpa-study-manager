@@ -46,12 +46,24 @@ export default function Home() {
         </div>
 
         <div className="text-center mt-12">
-          <Link href="/review">
-            <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors">
-              今日の復習
-            </button>
-          </Link>
-        </div>
+  <div className="flex justify-center gap-4 flex-wrap">
+    <Link href="/profile">
+      <button className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+        プレイヤーカード
+      </button>
+    </Link>
+    <Link href="/review">
+      <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors">
+        今日の復習
+      </button>
+    </Link>
+    <Link href="/stats">
+      <button className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+        学習統計
+      </button>
+    </Link>
+  </div>
+</div>
       </div>
     </div>
   );
